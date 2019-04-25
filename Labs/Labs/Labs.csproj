@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExceptionHandler\ExceptionHandler.cs" />
+    <Compile Include="ExecuteMethod\ExecuteMethod.cs" />
     <Compile Include="FetchXML\FetchXML.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

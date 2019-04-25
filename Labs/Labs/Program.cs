@@ -15,23 +15,26 @@ namespace Labs
             ExceptionHandler.ExceptionHandler.AddUnhandledExceptionHandler();
             var service = Service.Service.GetOrganization();
 
-            string fetchString =
-            @"<fetch mapping='logical'>
-                <entity name='account'>
-                <attribute name='accountid'/> <attribute name='name'/>
-                    <link-entity name='systemuser' to='owninguser'> 
-                        <filter type='and'> <condition attribute='lastname' operator='ne' value='Cannon' /> </filter>
-                    </link-entity> 
-                </entity>
-            </fetch> ";
+            Console.WriteLine("===Organization===");
 
-            foreach (var item in FetchXML.FetchXML.FethcXMLRequest(fetchString, service).Entities)
+            var organization = ExecuteMethod.ExecuteMethod.GetAllAcctAttributes(new string[] { "name","owner" }, service).Entities;
+            foreach (var item in organization)
             {
-                {
-                    Console.WriteLine(item.Attributes["name"]);
-                }
+                Console.WriteLine(item.Attributes["name"]);
             }
 
+            var users = ExecuteMethod.ExecuteMethod.GetAllUserAttributes(new string[] { "fullname" }, service).Entities;
+
+            organization[0].Attributes["ownerid"] = new EntityReference(users[0].LogicalName, users[0].Id);
+
+            service.Update(organization[0]);
+
+            Console.WriteLine("===Users===");
+
+            foreach (var item in users)
+            {
+                Console.WriteLine(item.Attributes["fullname"]);
+            }
             Console.Read();
         }
     }
